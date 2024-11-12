@@ -1,23 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTableModule} from '@angular/material/table';
 import { ToolbarComponent } from "../../components/toolbar/toolbar.component";
 import { RouterLink } from '@angular/router';
+import { ApiProductsService } from '../../services/api-products.service';
+import { Product } from '../../app.interface';
 
-export interface Product {
-  url_img: string;
-  name: string;
-  price: number;
-  category: number;
-  description: string;
-  stock: number;
-}
-
-const ELEMENT_DATA: Product[] = [
-  { name: 'Sabritas', url_img: 'https://www.sabritas.com.mx/wp-content/uploads/2019/07/sabritas-saladas.png', price: 10, category: 1, description: 'Papas fritas', stock: 10 },
-];
 
 @Component({
   selector: 'app-home',
@@ -26,8 +16,29 @@ const ELEMENT_DATA: Product[] = [
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
+
 export class HomeComponent {
+
+  private _apiProdcuts = inject(ApiProductsService);
+
+  constructor() { 
+    this._apiProdcuts.getProducts().subscribe( (response : any) => {
+      console.log(response);
+      this.dataSource = response;
+      }
+    )
+  }
+
   displayedColumns: string[] = ['url_img', 'name', 'price', 'category', 'description', 'stock', 'opciones'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Product[] = [];
   clickedRows = new Set<Product>();
+
+
+  delProduct(id: number){
+    this._apiProdcuts.delProduct(id).subscribe( (response : any) => {
+      console.log(response);
+      }
+    )
+    console.log('Eliminando producto con id: ' + id);
+  }
 }
