@@ -1,7 +1,7 @@
 <div style="display: flex; align-items:center; justify-content:center;">
 
-    <div style="display: flex; flex-direction:column;">
-        <form [formGroup]="formLogin" (ngSubmit)="login()">
+    <div style="display: flex; flex-direction:column;align-items:center">
+        <form [formGroup]="formLogin" style="display: flex; flex-direction: column; align-items:center;" (ngSubmit)="login()">
             <p>
                 <mat-form-field appearance="outline">
                   <mat-label>Email</mat-label>
@@ -16,6 +16,7 @@
             </p>
             <button mat-flat-button color="primary" type="submit">Login</button>
         </form>
+        <a routerLink="/register" style="text-decoration: none;">Crear una cuenta</a>
     </div>
 
 </div>

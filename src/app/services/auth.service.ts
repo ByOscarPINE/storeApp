@@ -15,4 +15,12 @@ export class AuthService {
   login(body: any){
     return this._http.post(API_URL + 'auth/login', body)
   }
+
+  register (body: any) {
+    return this._http.post(API_URL + 'auth/register', body)
+  }
+
+  getToken () {
+    return localStorage.getItem('token')|| null;
+  }
 }

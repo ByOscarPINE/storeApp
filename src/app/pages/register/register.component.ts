@@ -4,40 +4,39 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [MatFormFieldModule, MatIconModule, MatInputModule, ReactiveFormsModule, FormsModule, MatButton, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
+export class RegisterComponent {
 
-export class LoginComponent {
+  formRegister!: FormGroup;
   private fb = inject(FormBuilder);
-  private _authS = inject(AuthService);
-  formLogin!: FormGroup;
+  private _authS = inject(AuthService)
 
   constructor(private router : Router) {
-    this.formLogin = this.fb.group({
+    this.formRegister = this.fb.group({
+      name: [''],
       email: [''],
       password: ['']
     });
   }
 
-  login(){
-    console.log('Iniciando sesión');
-    console.log(this.formLogin.value);
-    if(this.formLogin.valid){
-      this._authS.login(this.formLogin.value).subscribe((response: any = {} )=> {
-        console.log(response)
-        if(response){
-          localStorage.setItem('token', response.token);
-           this.router.navigate(['/home']);
+  register () {
+    if(this.formRegister.valid){
+      this._authS.register(this.formRegister.value).subscribe((resp: any) => {
+        console.log(resp)
+        if(resp){
+          this.router.navigate(['/login']);
         }
       })
     }
   }
+
 }
